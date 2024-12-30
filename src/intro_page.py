@@ -8,7 +8,7 @@ pygame.init()
 def show_intro_page():
     intro_page = True
     # render button
-    button = Button("继续", 350, 400, 100, 50, config.TIMBERWOLF, config.BLACK, config.bold_font_small)
+    button = Button("继续", (config.screen_width / 2 - 50), int(3 / 4 * config.screen_height), 2 * int(config.screen_width / 25 * 7 / 10), int(config.screen_width / 25 * 7 / 10), config.TIMBERWOLF, config.BLACK, config.bold_font_small)
 
     while intro_page:
         # make the whole screen white
@@ -23,8 +23,8 @@ def show_intro_page():
         config.screen.blit(test_name_text, (config.screen.get_width() // 2 - test_name_text.get_width() // 2, config.screen.get_height() // 4))
         
         # Put new texts below the first text
-        config.screen.blit(illustration_text, (config.screen.get_width() // 2 - illustration_text.get_width() // 2, config.screen.get_height() // 4 + 100))
-        config.screen.blit(start_text, (config.screen.get_width() // 2 - start_text.get_width() // 2, config.screen.get_height() // 4 + 160))
+        config.screen.blit(illustration_text, (config.screen.get_width() // 2 - illustration_text.get_width() // 2, config.screen.get_height() // 2))
+        config.screen.blit(start_text, (config.screen.get_width() // 2 - start_text.get_width() // 2, config.screen.get_height() // 1.8))
 
         # draw the button
         button.draw(config.screen)
