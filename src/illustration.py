@@ -34,3 +34,36 @@ def show_tmta_illustration():
                     tmta_illustration = False
 
         pygame.display.update()
+
+def break_time_illustration():
+    break_time_running = True
+
+    # Start a timer for 5 seconds
+    start_time = pygame.time.get_ticks()
+    duration = 5000  # 5000 milliseconds (5 seconds)
+
+    while break_time_running:
+        config.screen.fill(config.WHITE)
+        break_text = config.bold_font_big.render("请休息片刻，完成下一个任务", True, config.BLACK)
+
+        # Center the text on the screen
+        config.screen.blit(
+            break_text,
+            (
+                config.screen.get_width() // 2 - break_text.get_width() // 2,
+                config.screen.get_height() // 4,
+            ),
+        )
+
+        # Detect events to allow early exit if needed
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        # Check if 5 seconds have passed
+        current_time = pygame.time.get_ticks()
+        if current_time - start_time >= duration:
+            break_time_running = False
+
+        pygame.display.update()
