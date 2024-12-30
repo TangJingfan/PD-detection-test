@@ -1,6 +1,6 @@
 import pygame
 from intro_page import show_intro_page
-from illustration import show_tmta_illustration, break_time_illustration
+from illustration import show_tmta_illustration, break_time_illustration, show_tmtb_illustration
 from tmta import tmta_test
 
 # init pygame structure
@@ -14,6 +14,7 @@ def main():
     show_tmta_illustration()
     tmta_test()
     break_time_illustration()
+    show_tmtb_illustration()
 
 # run main function
 if __name__ == "__main__":
