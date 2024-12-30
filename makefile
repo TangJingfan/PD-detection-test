@@ -3,3 +3,6 @@ run: src/standard_test.py
 
 clean: 
 	rm -r src/__pycache__
+
+format: src/*.py
+	black src/*.py
