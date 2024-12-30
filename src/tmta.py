@@ -1,7 +1,6 @@
 import pygame
 import random
 import config
-import time
 
 pygame.init()
 
@@ -19,23 +18,31 @@ def generate_positions():
 
 def tmta_test():
     running = True
-    start_time = None
-    errors = 0
     next_number = 1
     positions = generate_positions()
     clicked = [False] * 25
 
+    # create transparent canvas to record trajectory
+    trajectory_surface = pygame.Surface((config.screen_width, config.screen_height), pygame.SRCALPHA)
+    trajectory_surface.fill((0, 0, 0, 0))
+
     while running:
         config.screen.fill(config.WHITE)
 
-        # 绘制圆圈
+        # plot circles
         for i, (x, y) in enumerate(positions):
-            color = config.RED if clicked[i] else (config.GREEN if i + 1 == next_number else config.BLUE)
+            color = config.GREEN if clicked[i] else config.BLUE
             pygame.draw.circle(config.screen, color, (x, y), CIRCLE_RADIUS)
             text = config.normal_font_small.render(str(i + 1), True, config.WHITE)
             config.screen.blit(text, (x - text.get_width() // 2, y - text.get_height() // 2))
 
-        # 检测事件
+        # track mouse
+        mx, my = pygame.mouse.get_pos()
+        pygame.draw.circle(trajectory_surface, config.BLACK + (255,), (mx, my), 5)
+
+        config.screen.blit(trajectory_surface, (0, 0))
+
+        # detect events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -49,22 +56,22 @@ def tmta_test():
                             next_number += 1
                             if next_number > 25:
                                 running = False
-                                end_time = time.time()
-                        else:
-                            errors += 1
 
         pygame.display.update()
 
-    # 结果页面
-    duration = round(end_time - start_time, 2) if start_time else 0
-    while True:
-        config.screen.fill(config.WHITE)
-        result_text = config.normal_font_big.render(f"完成时间: {duration} 秒", True, config.BLACK)
-        error_text = config.normal_font_big.render(f"错误点击: {errors} 次", True, config.BLACK)
-        config.screen.blit(result_text, (config.screen_width // 2 - result_text.get_width() // 2, config.screen_height // 2 - 40))
-        config.screen.blit(error_text, (config.screen_width // 2 - error_text.get_width() // 2, config.screen_height // 2 + 20))
-        pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+    # save trajectory with background and circles
+    save_surface = pygame.Surface((config.screen_width, config.screen_height))
+    save_surface.fill(config.WHITE)
+
+    # draw circles on save surface
+    for i, (x, y) in enumerate(positions):
+        color = config.GREEN if clicked[i] else config.BLUE
+        pygame.draw.circle(save_surface, color, (x, y), CIRCLE_RADIUS)
+        text = config.normal_font_small.render(str(i + 1), True, config.WHITE)
+        save_surface.blit(text, (x - text.get_width() // 2, y - text.get_height() // 2))
+
+    # overlay the trajectory
+    save_surface.blit(trajectory_surface, (0, 0))
+
+    # save final image
+    pygame.image.save(save_surface, "tmt_a_mouse_trajectory.png")
