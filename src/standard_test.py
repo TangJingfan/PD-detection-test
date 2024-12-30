@@ -17,6 +17,7 @@ def main():
     break_time_illustration()
     show_tmtb_illustration()
     tmtb_test()
+    break_time_illustration()
 
 # run main function
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ def tmtb_test():
     next_index = 0
     positions = generate_positions()
     clicked = [False] * len(sequence)
+    error_count = 0  # Variable to count errors
 
     # Start the timer
     start_time = time.time()
@@ -47,6 +48,8 @@ def tmtb_test():
                             next_index += 1
                             if next_index >= len(sequence):
                                 running = False
+                        else:
+                            error_count += 1  # Increment error count for incorrect clicks
 
         pygame.display.update()
 
@@ -68,11 +71,13 @@ def tmtb_test():
     # Overlay the trajectory
     save_surface.blit(trajectory_surface, (0, 0))
 
-    # Add the total time text
+    # Add the total time and error count text
     time_text = f"Total Time: {total_time:.2f} seconds"
+    error_text = f"Errors: {error_count}"
     time_surface = config.normal_font_small.render(time_text, True, config.BLACK)
-    save_surface.blit(time_surface, (10, 10))  # Display in the top-left corner
+    error_surface = config.normal_font_small.render(error_text, True, config.BLACK)
+    save_surface.blit(time_surface, (10, 10))  # Display time in the top-left corner
+    save_surface.blit(error_surface, (10, 60))  # Display error count below time
 
     # Save final image
     pygame.image.save(save_surface, "tmt_b_mouse_trajectory.png")
-
