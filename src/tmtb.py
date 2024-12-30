@@ -1,27 +1,14 @@
 import pygame
-import random
 import config
+from tmta import generate_positions, CIRCLE_RADIUS
 import time
 
-pygame.init()
-
-CIRCLE_RADIUS = int(config.screen_width / 40)
-CIRCLE_PADDING = 80
-
-def generate_positions():
-    positions = []
-    while len(positions) < 25: # should be 25
-        x = random.randint(CIRCLE_PADDING, config.screen_width - CIRCLE_PADDING)
-        y = random.randint(CIRCLE_PADDING, config.screen_height - CIRCLE_PADDING)
-        if all((x - px) ** 2 + (y - py) ** 2 >= (CIRCLE_RADIUS * 2) ** 2 for px, py in positions):
-            positions.append((x, y))
-    return positions
-
-def tmta_test():
+def tmtb_test():
     running = True
-    next_number = 1
+    sequence = ['1', '一', '2', '二', '3', '三', '4', '四', '5', '五', '6', '六', '7', '七', '8', '八']
+    next_index = 0
     positions = generate_positions()
-    clicked = [False] * 25 # should be 25
+    clicked = [False] * len(sequence)
 
     # Start the timer
     start_time = time.time()
@@ -34,10 +21,10 @@ def tmta_test():
         config.screen.fill(config.WHITE)
 
         # Plot circles
-        for i, (x, y) in enumerate(positions):
+        for i, (x, y) in enumerate(positions[:len(sequence)]):
             color = config.GREEN if clicked[i] else config.BLUE
             pygame.draw.circle(config.screen, color, (x, y), CIRCLE_RADIUS)
-            text = config.normal_font_small.render(str(i + 1), True, config.WHITE)
+            text = config.normal_font_small.render(sequence[i], True, config.WHITE)
             config.screen.blit(text, (x - text.get_width() // 2, y - text.get_height() // 2))
 
         # Track mouse
@@ -53,12 +40,12 @@ def tmta_test():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = event.pos
-                for i, (x, y) in enumerate(positions):
+                for i, (x, y) in enumerate(positions[:len(sequence)]):
                     if not clicked[i] and (x - mx) ** 2 + (y - my) ** 2 <= CIRCLE_RADIUS ** 2:
-                        if i + 1 == next_number:
+                        if i == next_index:
                             clicked[i] = True
-                            next_number += 1
-                            if next_number > 25: # should be 25
+                            next_index += 1
+                            if next_index >= len(sequence):
                                 running = False
 
         pygame.display.update()
@@ -72,10 +59,10 @@ def tmta_test():
     save_surface.fill(config.WHITE)
 
     # Draw circles on save surface
-    for i, (x, y) in enumerate(positions):
+    for i, (x, y) in enumerate(positions[:len(sequence)]):
         color = config.GREEN if clicked[i] else config.BLUE
         pygame.draw.circle(save_surface, color, (x, y), CIRCLE_RADIUS)
-        text = config.normal_font_small.render(str(i + 1), True, config.WHITE)
+        text = config.normal_font_small.render(sequence[i], True, config.WHITE)
         save_surface.blit(text, (x - text.get_width() // 2, y - text.get_height() // 2))
 
     # Overlay the trajectory
@@ -87,4 +74,5 @@ def tmta_test():
     save_surface.blit(time_surface, (10, 10))  # Display in the top-left corner
 
     # Save final image
-    pygame.image.save(save_surface, "tmt_a_mouse_trajectory.png")
+    pygame.image.save(save_surface, "tmt_b_mouse_trajectory.png")
+
