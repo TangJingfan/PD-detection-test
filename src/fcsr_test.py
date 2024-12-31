@@ -11,16 +11,23 @@ items = [
     {"线索": "动物", "关键词": "大象"},
     {"线索": "水果", "关键词": "苹果"},
     {"线索": "交通工具", "关键词": "公交车"},
-    {"线索": "颜色", "关键词": "蓝色"}
+    {"线索": "颜色", "关键词": "蓝色"},
+    {"线索": "地点", "关键词": "学校"},
+    {"线索": "生活用品", "关键词": "水杯"},
+    {"线索": "调味品", "关键词": "盐"},
+    {"线索": "蔬菜", "关键词": "黄瓜"},
+    {"线索": "电器", "关键词": "空调"},
+    {"线索": "饮料", "关键词": "茶"}
 ]
+
 random.shuffle(items)
 
-# 显示文字的函数
+# render text
 def draw_text(text, x, y, color=config.BLACK):
     render = config.normal_font_small.render(text, True, color)
     config.screen.blit(render, (x, y))
 
-# 主测试流程
+# main test process
 def memory_test():
     running = True
     stage = "learning"
@@ -82,11 +89,11 @@ def memory_test():
             pygame.display.flip()
 
         elif stage == "results":
-            # 计算自由回忆正确数量
+            # result in free call
             free_recall_correct = len(set(free_recall_results).intersection(set([item['关键词'] for item in items])))
-            # 计算提示回忆正确数量
+            # cued call
             cued_recall_correct = sum(1 for i, result in enumerate(recall_results) if result.lower() == items[i]["关键词"].lower())
-            # 计算两个环节都正确的数量
+            # both
             both_correct = len(set(free_recall_results).intersection(set(result for i, result in enumerate(recall_results) if result.lower() == items[i]["关键词"].lower())))
 
             for i, result in enumerate(recall_results):
@@ -102,8 +109,7 @@ def memory_test():
 
         pygame.display.flip()
 
-    pygame.quit()
-
-# 运行测试
-if __name__ == "__main__":
-    memory_test()
+#     pygame.quit()
+    
+# if __name__ == "__main__":
+#     memory_test()
