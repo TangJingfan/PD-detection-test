@@ -1,6 +1,6 @@
 import pygame
 from intro_page import show_intro_page
-from illustration import show_tmta_illustration, break_time_illustration, show_tmtb_illustration
+from illustration import show_tmta_illustration, break_time_illustration, show_tmtb_illustration, show_memory_illustration
 from tmta import tmta_test
 from tmtb import tmtb_test
 from fcsr_test import memory_test
@@ -19,7 +19,9 @@ def main():
     show_tmtb_illustration()
     tmtb_test()
     break_time_illustration()
+    show_memory_illustration()
     memory_test()
+    break_time_illustration()
 
 # run main function
 if __name__ == "__main__":

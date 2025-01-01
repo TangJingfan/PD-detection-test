@@ -30,7 +30,7 @@ def tmtb_test():
 
         # Track mouse
         mx, my = pygame.mouse.get_pos()
-        pygame.draw.circle(trajectory_surface, config.BLACK + (255,), (mx, my), 5)
+        pygame.draw.circle(trajectory_surface, config.BLACK + (255,), (mx, my), 2)
 
         config.screen.blit(trajectory_surface, (0, 0))
 
