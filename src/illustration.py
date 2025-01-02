@@ -118,12 +118,14 @@ def show_memory_illustration():
         config.screen.blit(illustration_text_3, (config.screen.get_width() // 2 - start_text.get_width() // 2, config.screen.get_height() // 4 + 3 * config.screen.get_height() // 15))
         config.screen.blit(start_text, (config.screen.get_width() // 2 - start_text.get_width() // 2, config.screen.get_height() // 4 + 4 * config.screen.get_height() // 15))
 
+        button.draw(config.screen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button.is_clicked(event.pos):
-                    tmta_illustration = False
+                    memory_illustration = False
 
         pygame.display.update()
