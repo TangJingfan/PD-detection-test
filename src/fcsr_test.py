@@ -2,6 +2,9 @@ import pygame
 import random
 import time
 import config
+from Pinyin2Hanzi import DefaultDagParams
+from Pinyin2Hanzi import dag
+
 
 # init pygame
 pygame.init()
@@ -12,11 +15,17 @@ items = [
     {"线索": "水果", "关键词": "苹果"},
     {"线索": "交通工具", "关键词": "公交车"},
     {"线索": "颜色", "关键词": "蓝色"},
+    {"线索": "职业", "关键词": "医生"},
+    {"线索": "乐器", "关键词": "钢琴"},
+    {"线索": "运动", "关键词": "足球"},
     {"线索": "地点", "关键词": "学校"},
     {"线索": "生活用品", "关键词": "水杯"},
     {"线索": "调味品", "关键词": "盐"},
     {"线索": "蔬菜", "关键词": "黄瓜"},
     {"线索": "电器", "关键词": "空调"},
+    {"线索": "节日", "关键词": "春节"},
+    {"线索": "建筑", "关键词": "长城"},
+    {"线索": "天气", "关键词": "晴天"},
     {"线索": "饮料", "关键词": "茶"}
 ]
 
@@ -109,7 +118,29 @@ def memory_test():
 
         pygame.display.flip()
 
-#     pygame.quit()
-    
-# if __name__ == "__main__":
-#     memory_test()
+
+# Add a new phase for typing test
+def typing_test():
+    running = True
+    user_input = ""
+    target_text = "电脑"
+    while running:
+        config.screen.fill(config.WHITE)
+        draw_text("请在下方输入 '电脑' 并按回车确认。", 50, 200)
+        draw_text(f"你的输入: {user_input}", 50, 300)
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                return False  # User quits the game
+            elif event.type == pygame.TEXTINPUT:
+                user_input += event.text
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    if user_input.strip() == target_text:
+                        return True  # Typing test passed
+                    else:
+                        return False  # Typing test failed
+                elif event.key == pygame.K_BACKSPACE:
+                    user_input = user_input[:-1]

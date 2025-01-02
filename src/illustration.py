@@ -115,7 +115,7 @@ def show_memory_illustration():
         config.screen.blit(task_text, (config.screen.get_width() // 2 - task_text.get_width() // 2, config.screen.get_height() // 4))
         config.screen.blit(illustration_text, (config.screen.get_width() // 2 - illustration_text.get_width() // 2, config.screen.get_height() // 4 + config.screen.get_height() // 15))
         config.screen.blit(illustration_text_2, (config.screen.get_width() // 2 - illustration_text_2.get_width() // 2, config.screen.get_height() // 4 + 2 * config.screen.get_height() // 15))
-        config.screen.blit(illustration_text_3, (config.screen.get_width() // 2 - start_text.get_width() // 2, config.screen.get_height() // 4 + 3 * config.screen.get_height() // 15))
+        config.screen.blit(illustration_text_3, (config.screen.get_width() // 2 - illustration_text_3.get_width() // 2, config.screen.get_height() // 4 + 3 * config.screen.get_height() // 15))
         config.screen.blit(start_text, (config.screen.get_width() // 2 - start_text.get_width() // 2, config.screen.get_height() // 4 + 4 * config.screen.get_height() // 15))
 
         button.draw(config.screen)
