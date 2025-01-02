@@ -2,31 +2,29 @@ import pygame
 import random
 import time
 import config
-from Pinyin2Hanzi import DefaultDagParams
-from Pinyin2Hanzi import dag
-
+from textbox import TextBox  # 引入 TextBox 类
 
 # init pygame
 pygame.init()
 
 # answer 
 items = [
-    {"线索": "动物", "关键词": "大象"},
-    {"线索": "水果", "关键词": "苹果"},
-    {"线索": "交通工具", "关键词": "公交车"},
-    {"线索": "颜色", "关键词": "蓝色"},
-    {"线索": "职业", "关键词": "医生"},
-    {"线索": "乐器", "关键词": "钢琴"},
-    {"线索": "运动", "关键词": "足球"},
-    {"线索": "地点", "关键词": "学校"},
-    {"线索": "生活用品", "关键词": "水杯"},
-    {"线索": "调味品", "关键词": "盐"},
-    {"线索": "蔬菜", "关键词": "黄瓜"},
-    {"线索": "电器", "关键词": "空调"},
-    {"线索": "节日", "关键词": "春节"},
-    {"线索": "建筑", "关键词": "长城"},
-    {"线索": "天气", "关键词": "晴天"},
-    {"线索": "饮料", "关键词": "茶"}
+    {"线索": "动物", "关键词": "大象"}
+    # {"线索": "水果", "关键词": "苹果"},
+    # {"线索": "交通工具", "关键词": "公交车"},
+    # {"线索": "颜色", "关键词": "蓝色"},
+    # {"线索": "职业", "关键词": "医生"},
+    # {"线索": "乐器", "关键词": "钢琴"},
+    # {"线索": "运动", "关键词": "足球"},
+    # {"线索": "地点", "关键词": "学校"},
+    # {"线索": "生活用品", "关键词": "水杯"},
+    # {"线索": "调味品", "关键词": "盐"},
+    # {"线索": "蔬菜", "关键词": "黄瓜"},
+    # {"线索": "电器", "关键词": "空调"},
+    # {"线索": "节日", "关键词": "春节"},
+    # {"线索": "建筑", "关键词": "长城"},
+    # {"线索": "天气", "关键词": "晴天"},
+    # {"线索": "饮料", "关键词": "茶"}
 ]
 
 random.shuffle(items)
@@ -122,25 +120,40 @@ def memory_test():
 # Add a new phase for typing test
 def typing_test():
     running = True
-    user_input = ""
     target_text = "电脑"
+
+    # create textbox
+    text_box = TextBox(config.screen_height // 2, 30, config.screen_height // 20, config.screen_width // 10 + 3 * config.screen_width // 30, config.normal_font_small, callback=typing_callback)
+
     while running:
         config.screen.fill(config.WHITE)
-        draw_text("请在下方输入 '电脑' 并按回车确认。", 50, 200)
-        draw_text(f"你的输入: {user_input}", 50, 300)
+
+        # render instruction
+        draw_text("请在下方输入 '电脑' 并按回车确认。", config.screen_height // 20, config.screen_width // 10)
+        draw_text(f"你的输入: {text_box.text}", config.screen_height // 20, config.screen_width // 10 + config.screen_width // 30)
+
+        # render textbox
+        text_box.draw(config.screen)
+
         pygame.display.flip()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-                return False  # User quits the game
-            elif event.type == pygame.TEXTINPUT:
-                user_input += event.text
+                exit()
             elif event.type == pygame.KEYDOWN:
+                text_box.safe_key_down(event)
+                
+                # check whether the answer is correct
                 if event.key == pygame.K_RETURN:
-                    if user_input.strip() == target_text:
-                        return True  # Typing test passed
+                    if text_box.text.strip() == target_text:
+                        return True  
                     else:
-                        return False  # Typing test failed
-                elif event.key == pygame.K_BACKSPACE:
-                    user_input = user_input[:-1]
+                        return False  
+
+        pygame.time.delay(33)
+
+        pygame.display.flip()
+
+        
+def typing_callback(text):
+    print("输入的文本是:", text)

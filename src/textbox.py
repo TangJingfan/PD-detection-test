@@ -129,33 +129,3 @@ class TextBox:
         self.word_list = []  
         self.word_list_surf = None  
         self.buffer_text = ''  
-
-
-# def callback(text):
-#     print("回车测试", text)
- 
- 
-# def main():
-#     # 英文文本框demo
-#     pygame.init()
-#     winSur = pygame.display.set_mode((640, 480))
-#     # 创建文本框
-#     text_box = TextBox(200, 30, 200, 200, config.normal_font_small, callback=callback)
- 
-#     # 游戏主循环
-#     while True:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 exit()
-#             elif event.type == pygame.KEYDOWN:
-#                 # 调用文本框键盘按下事件
-#                 text_box.safe_key_down(event)
-#         pygame.time.delay(33)
-#         winSur.fill((100, 100, 0))
-#         # 绘制文本框
-#         text_box.draw(winSur)
-#         pygame.display.flip()
- 
- 
-# if __name__ == '__main__':
-#     main()
