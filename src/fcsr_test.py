@@ -9,7 +9,7 @@ pygame.init()
 
 # answer 
 items = [
-    {"线索": "动物", "关键词": "大象"}
+    # {"线索": "动物", "关键词": "大象"},
     # {"线索": "水果", "关键词": "苹果"},
     # {"线索": "交通工具", "关键词": "公交车"},
     # {"线索": "颜色", "关键词": "蓝色"},
@@ -24,7 +24,7 @@ items = [
     # {"线索": "节日", "关键词": "春节"},
     # {"线索": "建筑", "关键词": "长城"},
     # {"线索": "天气", "关键词": "晴天"},
-    # {"线索": "饮料", "关键词": "茶"}
+    {"线索": "饮料", "关键词": "茶"}
 ]
 
 random.shuffle(items)
@@ -42,7 +42,9 @@ def memory_test():
     user_input = ""
     recall_results = []
     free_recall_results = []
-    correct_recall = 0
+
+    text_box = TextBox(config.screen_height // 2, 30, config.screen_height // 20 + 6 * config.screen_height // 30, config.screen_width // 10 + 7.5 * config.screen_width // 30, config.normal_font_small, callback=typing_callback)
+
 
     while running:
         config.screen.fill(config.WHITE)
@@ -50,15 +52,14 @@ def memory_test():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.TEXTINPUT:
-                user_input += event.text
             elif event.type == pygame.KEYDOWN:
                 if stage in ["free_recall", "recall"]:
+                    text_box.safe_key_down(event)
                     if event.key == pygame.K_RETURN:
                         if stage == "free_recall":
-                            free_recall_results.append(user_input.strip())
+                            free_recall_results.append(text_box.text.strip())
                         elif stage == "recall":
-                            recall_results.append(user_input.strip())
+                            recall_results.append(text_box.text.strip())
                         user_input = ""
                         current_index += 1
                         if current_index >= len(items):
@@ -83,16 +84,20 @@ def memory_test():
                 current_index = 0
 
         elif stage == "free_recall":
-            draw_text("自由回忆阶段: 输入你记得的所有项目并按回车确认。", 50, 200)
-            draw_text(f"你的答案: {user_input}", 50, 300)
+            draw_text("自由回忆阶段: 输入你记得的所有项目并按回车确认，直到进入下一环节。", 50, 100)
+            draw_text("输入新答案前，请先删除输入框里的文字", 50, 200)
+            draw_text("请用 - 和 + 来选择合适的字", 50, 300)
+            draw_text(f"你的答案: {user_input}", 50, 400)
+            text_box.draw(config.screen)
             pygame.display.flip()
 
         elif stage == "recall":
             if current_index < len(items):
                 cue = items[current_index]["线索"]
                 draw_text(f"提示回忆阶段: 根据线索回答。", 50, 200)
-                draw_text(f"线索: {cue}", 200, 250)
-                draw_text(f"你的答案: {user_input}", 200, 300)
+                draw_text(f"线索: {cue}", 50, 250)
+                draw_text(f"你的答案: {user_input}", 50, 400)
+                text_box.draw(config.screen)
             pygame.display.flip()
 
         elif stage == "results":
